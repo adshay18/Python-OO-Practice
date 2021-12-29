@@ -25,9 +25,12 @@ class WordFinder:
             count += 1
         txt_file.close()
         print(f'{count} words read')
-        return count
+
     
     def random(self):
+        '''
+        When called this method provides a random word from the text document that was read.
+        '''
         words_list = []
         txt_file = open(self.path_to_file)
         for line in txt_file:
