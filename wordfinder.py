@@ -12,28 +12,31 @@ class WordFinder:
     '''
     def __init__(self, path_to_file):
         self.path_to_file = path_to_file
-        self.read_num_words()
+        raw = open(path_to_file, 'r')
+        self.words_list = self.extract_words(raw)
+        print(f'{len(self.words_list)} words read')
     
         
-    def read_num_words(self):
+    def extract_words(self, raw):
         '''
-        Function called to read the total number of words in a file, granted the file only contains one word per line.
+        Turn file into a list to work with in python
         '''
-        count = 0
-        txt_file = open(self.path_to_file)
-        for line in txt_file:
-            count += 1
-        txt_file.close()
-        print(f'{count} words read')
+        return [line.strip() for line in raw]
+     
 
     
     def random(self):
         '''
         When called this method provides a random word from the text document that was read.
         '''
-        words_list = []
-        txt_file = open(self.path_to_file)
-        for line in txt_file:
-            words_list.append(line.strip())
-        txt_file.close()
-        return choice(words_list)
+        return choice(self.words_list)
+    
+class SpecialWordFinder(WordFinder):
+    '''
+    Special class to handle documents with blank lines and comments
+    '''
+    def extract_words(self, raw):
+        '''
+        When called this method provides a list of words that ignore blank lines and comments
+        '''
+        return [line.strip() for line in raw if line.strip() and not line.startswith('#')]
